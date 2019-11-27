@@ -1,0 +1,50 @@
+.articleIndex {
+  min-height: 100%;
+  position: relative;
+  .leftMenu {
+    width: 200px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: #f9fcff;
+    overflow-y: auto;
+  }
+  .leftLine {
+    position: absolute;
+    top: 0;
+    left: 200px;
+    bottom: 0;
+    width: 5px;
+    height: 100%;
+    float: left;
+    background: #dae6f0;
+    .lineBlock {
+      position: absolute;
+      display: block;
+      padding: 0px;
+      margin: 0px;
+      overflow: hidden;
+      text-align: center;
+      font-size: 1px;
+      cursor: pointer;
+      z-index: 1;
+      visibility: visible;
+      height: 50px;
+      width: 5px;
+      top: 50%;
+      margin-top: -25px;
+      left: 0px;
+      background: @primary-color;
+    }
+  }
+  .rightList {
+    padding: 0 20px;
+    position: absolute;
+    top: 0;
+    left: 205px;
+    right: 0;
+    bottom: 0;
+  }
+}
