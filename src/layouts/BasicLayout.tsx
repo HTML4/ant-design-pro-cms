@@ -63,7 +63,6 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
     };
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
-
 const defaultFooterDom = (
   <DefaultFooter
     copyright="2019 蚂蚁金服体验技术部出品"
@@ -147,6 +146,26 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     authority: undefined,
   };
 
+  // const d = [
+  //   {
+  //     children: [],
+  //     exact: true,
+  //     icon: 'smile',
+  //     locale: 'menu.category',
+  //     name: 'category',
+  //     path: '/category',
+  //     routes: null,
+  //   },
+  //   {
+  //     children: [],
+  //     exact: true,
+  //     icon: 'smile',
+  //     locale: 'menu.article',
+  //     name: 'article',
+  //     path: '/article',
+  //     routes: null,
+  //   },
+  // ];
   return (
     <ProLayout
       logo={logo}
@@ -161,7 +180,17 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         if (menuItemProps.isUrl || menuItemProps.children) {
           return defaultDom;
         }
-        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        return (
+          <Link to={menuItemProps.path}>
+            <Icon type={menuItemProps.icon} />
+            <span>
+              {formatMessage({
+                id: (menuItemProps && menuItemProps.locale) || '',
+              })}
+            </span>
+          </Link>
+        );
+        // return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
       breadcrumbRender={(routers = []) => [
         {

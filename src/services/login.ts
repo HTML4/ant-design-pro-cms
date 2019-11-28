@@ -1,14 +1,18 @@
 import request from '@/utils/request';
 
 export interface LoginParamsType {
-  userName: string;
+  username: string;
   password: string;
   mobile: string;
   captcha: string;
 }
 
 export async function fakeAccountLogin(params: LoginParamsType) {
-  return request('/api/login/account', {
+  // return request('/api/login/account', {
+  //   method: 'POST',
+  //   data: params,
+  // });
+  return request('/cms/user/login.do', {
     method: 'POST',
     data: params,
   });
@@ -16,4 +20,8 @@ export async function fakeAccountLogin(params: LoginParamsType) {
 
 export async function getFakeCaptcha(mobile: string) {
   return request(`/api/login/captcha?mobile=${mobile}`);
+}
+
+export async function logout() {
+  return request('cms/user/logout.do');
 }

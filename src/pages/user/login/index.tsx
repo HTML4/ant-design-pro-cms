@@ -94,7 +94,7 @@ class Login extends Component<LoginProps, LoginState> {
 
   render() {
     const { userLogin, submitting } = this.props;
-    const { status, type: loginType } = userLogin;
+    const { code, type: loginType } = userLogin;
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
@@ -107,14 +107,14 @@ class Login extends Component<LoginProps, LoginState> {
           }}
         >
           <Tab key="account" tab={formatMessage({ id: 'user-login.login.tab-login-credentials' })}>
-            {status === 'error' &&
+            {code !== 0 &&
               loginType === 'account' &&
               !submitting &&
               this.renderMessage(
                 formatMessage({ id: 'user-login.login.message-invalid-credentials' }),
               )}
             <UserName
-              name="userName"
+              name="username"
               placeholder={`${formatMessage({ id: 'user-login.login.userName' })}: admin or user`}
               rules={[
                 {
@@ -141,7 +141,7 @@ class Login extends Component<LoginProps, LoginState> {
             />
           </Tab>
           <Tab key="mobile" tab={formatMessage({ id: 'user-login.login.tab-login-mobile' })}>
-            {status === 'error' &&
+            {code !== 0 &&
               loginType === 'mobile' &&
               !submitting &&
               this.renderMessage(

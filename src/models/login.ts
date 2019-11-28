@@ -3,12 +3,12 @@ import { routerRedux } from 'dva/router';
 import { Effect } from 'dva';
 import { stringify } from 'querystring';
 
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
+import { fakeAccountLogin, getFakeCaptcha, logout } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
 export interface StateType {
-  status?: 'ok' | 'error';
+  code?: Number;
   type?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
@@ -30,7 +30,7 @@ const Model: LoginModelType = {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    code: undefined,
   },
 
   effects: {
@@ -38,10 +38,10 @@ const Model: LoginModelType = {
       const response = yield call(fakeAccountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: Object.assign({}, response, { type: payload.type }),
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === 0) {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -64,18 +64,21 @@ const Model: LoginModelType = {
     *getCaptcha({ payload }, { call }) {
       yield call(getFakeCaptcha, payload);
     },
-    *logout(_, { put }) {
-      const { redirect } = getPageQuery();
-      // redirect
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
+    *logout(_, { call, put }) {
+      const response = yield call(logout);
+      if (response.code === 0) {
+        const { redirect } = getPageQuery();
+        // redirect
+        if (window.location.pathname !== '/user/login' && !redirect) {
+          yield put(
+            routerRedux.replace({
+              pathname: '/user/login',
+              search: stringify({
+                redirect: window.location.href,
+              }),
             }),
-          }),
-        );
+          );
+        }
       }
     },
   },
@@ -85,7 +88,7 @@ const Model: LoginModelType = {
       setAuthority(payload.currentAuthority);
       return {
         ...state,
-        status: payload.status,
+        code: payload.code,
         type: payload.type,
       };
     },

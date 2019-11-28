@@ -144,20 +144,7 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
-            },
-            {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
+              redirect: '/category',
             },
             {
               path: '/category',
@@ -236,11 +223,11 @@ export default {
     basePath: '/',
   },
   // chainWebpack: webpackPlugin,
-  // proxy: {
-  //   '/server/api/': {
-  //     target: 'https://preview.pro.ant.design/',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/server': '' },
-  //   },
-  // },
+  proxy: {
+    '/cms/': {
+      target: 'http://localhost:8080/cms/',
+      changeOrigin: true,
+      pathRewrite: { '^/cms': '' },
+    },
+  },
 } as IConfig;

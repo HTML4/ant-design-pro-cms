@@ -1,0 +1,744 @@
+@charset "utf-8";
+/* 通用的一些样式 */
+/************************** a链接-灰色 **********************/
+.link-gray {
+  color: #999;
+}
+
+/************************** 星号-红色（必填前面那个） **********************/
+.redStar {
+  margin-right: 4px;
+  font-family: SimSun;
+  color: @red-6;
+}
+
+/************************** 灰色的小竖线 **********************/
+.little-vLine {
+  display: inline-block;
+  height: 12px;
+  width: 1px;
+  background: #ccc;
+  margin: 0 10px;
+}
+/************************** 灰色横线 **********************/
+.grayLine {
+  margin: 12px 0;
+  width: 100%;
+  height: 1px;
+  background-color: #ddd;
+}
+/************************** 灰色横点线 **********************/
+.dottedLine {
+  margin: 10px 0;
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed @primary3;
+}
+/************************** 暂无数据 **********************/
+.no-data {
+  width: 100%;
+  height: 218px;
+  line-height: 218px;
+  color: #999;
+  text-align: center;
+  border: 1px solid #e8e8e8;
+  overflow: hidden;
+  .ant-empty-normal{
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+  }
+}
+/************************** 省略号 **********************/
+.toEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/************************** 蓝色背景色的header **********************/
+.boxHeader {
+  padding: 0 15px;
+  line-height: 50px;
+  color: #666;
+  font-size: 16px;
+  background-color: @primary4;
+}
+/************************** footer按钮组(例：我的账户-/funds/univeral) **********************/
+.btnFooter {
+  padding: 7px 10px 0;
+  height: 38px;
+  font-size: 12px;
+  border: 1px solid #d9d9d9;
+}
+
+/************************** 列表-颜色icon(例：审批列表-/approval/approvalList) **********************/
+.listIcon {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  line-height: 20px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  >span {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+  }
+  .leftL {
+    width: 20px;
+    border-radius: 50% 0 0 50% ;
+  }
+  .rightL {
+    width: 20px;
+    border-radius: 0 50% 50% 0;
+  }
+  .conterL {
+    position: absolute;
+    left: 8px;
+  }
+
+  //蓝色-（货押：解押、出库）
+  &.blueL {
+    span.leftL, span.rightL {
+      background: #529eef;
+    }
+  }
+  //蓝色2-（供应链：解押、发货、出库、贷采）
+  &.blue2L {
+    span.leftL, span.rightL {
+      background: @primary1;
+    }
+  }
+  //蓝色3-（供应链：额度、协议）
+  &.blue3L {
+    span.leftL, span.rightL {
+      background: @primary-color;
+    }
+  }
+  //橙色-移库、盘库
+  &.orangeL {
+    span.leftL, span.rightL {
+      background: #fa0;
+    }
+  }
+  //绿色-质物、质押、入库
+  &.greenL {
+    span.leftL, span.rightL {
+      background: #32acb0;
+    }
+  }
+  //蓝绿色-（货押：额度）
+  &.bGreenL {
+    span.leftL, span.rightL {
+      background: #76d7db;
+    }
+  }
+  //红色-（货押：签章）
+  &.redL {
+    span.leftL, span.rightL {
+      background: #ff6f6f;
+    }
+  }
+  //红色-（供应链：签章、付款、出金）
+  &.red2L {
+    span.leftL, span.rightL {
+      background: #ff8b94;
+    }
+  }
+  //暗绿色-认证、注册、销户
+  &.dGreenL {
+    span.leftL, span.rightL {
+      background: #81cba6;
+    }
+  }
+
+}
+
+
+/************************** 上传图片-详情显示图片 **********************/
+.imgList li {
+  padding: 8px;
+  display: inline-block;
+  width: 118px;
+  height: 88px;
+  margin-right: 30px;
+  overflow: hidden;
+}
+
+
+/************************** fieldset标签 **********************/
+fieldset {
+  border: 0;
+}
+
+/************************** formItem-p，缩略号--协议详情 **********************/
+.pToe {
+  .ant-form-item-control-wrapper {
+    p {
+      overflow:hidden;
+      word-wrap:normal;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+    }
+  }
+}
+
+/************************** 例如：【完善企业信息】--模块 **********************/
+//不能编辑时，input去掉border
+.input-noBorder {
+  input {
+    border: 0;
+  }
+}
+.stepWrap {
+  padding: 15px 50px 30px;
+}
+
+.infoWrap {
+  color: #666;
+  width: 600px;
+  margin: 0 auto;
+
+  // header {
+  //   position: relative;
+  //   margin: 38px 0 30px 0;
+  //   border-top: 1px dotted #ddd;
+  //   span {
+  //     position: absolute;
+  //     left: 0;
+  //     top: -15px;
+  //     padding-left: 35px;
+  //     line-height: 30px;
+  //     font-size: 16px;
+  //     font-weight: bold;
+  //     background-color: #fff;
+  //   }
+  // }
+
+  // .ant-form-item {
+  //   width: 600px;
+  //   margin: 0 auto 20px;
+  // }
+
+  label {
+    font-size: 14px;
+    color: #666;
+  }
+
+  input {
+    width: 420px;
+  }
+  .ant-calendar-range-picker-input {
+    width: auto;
+  }
+}
+
+//上传组件的一些样式修改
+.uploadList {
+  float: left;
+  width: 120px;
+  margin-right: 50px;
+  .ant-form-item {
+    width: auto;
+
+    .has-error .ant-form-explain {
+      text-align: center;
+    }
+  }
+}
+.uploadName {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  display: block;
+  width: 120px;
+  text-align: center;
+}
+.imgUpload .ant-upload-select-picture-card > .ant-upload, .imgUpload .ant-upload-list-item > .ant-upload {
+  line-height: 1;
+}
+
+.buttonCenter {
+  display: block;
+  margin: 30px auto 0;
+  width: 110px;
+}
+
+/************************** 例如：【账号管理-修改密码】--模块 **********************/
+//宽度为600并居中的盒子
+.infoWrap600 {
+  width: 600px;
+  margin: 0 auto;
+}
+
+/************************** 例如：【协议详情】--模块 **********************/
+//header，左边带蓝色色块
+.title-header {
+  margin-top: 30px;
+  position: relative;
+  padding-left: 14px;
+  line-height: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #fff;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 0;
+    height: 16px;
+    width: 4px;
+    background-color: @primary-color;
+  }
+}
+
+/************************** 例如：【订单列表】--模块 **********************/
+//header，带背景色和带border
+.listHeader {
+  height: 40px;
+  line-height: 38px;
+  border: 1px solid #e8e8e8;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+
+//================= 收发货样式  （可参考订单详情页面） =================
+.clientComponent{
+  position: relative;
+  &.noText{
+    .clientInfo{
+      margin-top: 15px;
+      i{
+        // padding: 0 10px;
+        padding: 10px;
+      }
+      .info {
+        //margin-top: 0;
+        // line-height: 70px;
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+  .centerBox{
+    position: absolute;
+    left: 50%;
+    margin-left: -210px;
+    width: 420px;
+    text-align: center;
+    .amount{
+      color: #999;
+      .span{
+        font-size: 20px;
+        color: @text-color;
+      }
+    }
+    .line{
+      height: 2px;
+      margin-top: 10px;
+      background-color: #ccc;
+      i{
+        font-size: 20px;
+        color: #ccc;
+        position: absolute;
+        right: -8px;
+        top: -8px;
+      }
+    }
+    .btn{
+      margin-top: 20px;
+    }
+  }
+  .buy{
+    width: 50%;
+    padding-left: 210px;
+    .clientInfo {
+      border-color: #ff8b94;
+      &>i{
+        // border-left: 1px solid #ccc;
+        background-color: #ff8b94;
+      }
+    }
+    .span{
+      margin-left: 20px;
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+  }
+  .sell{
+    width: 50%;
+    padding-right: 210px;
+    .clientInfo {
+      i{
+        // border-right: 1px solid #ccc;
+      }
+      .footer {
+        border-color: #76d7db;
+      }
+    }
+
+    .span{
+      margin-right: 20px;
+      &:last-child{
+        margin-right: 0;
+      }
+    }
+  }
+  .clientInfo{
+    // background-color: #f5f5f5;
+    color: #666;
+    // border: 1px solid #ccc;
+    border: 1px solid #76d7db;
+
+    &>i{
+      font-size: 50px;
+      padding: 15px 10px;
+      // color: @primary2;
+      color: #fff;
+      background-color: #76d7db;
+    }
+    .info{
+      overflow: hidden;
+      margin-top: 15px;
+      padding: 0 10px;
+      &.mt10{
+        margin-top: 10px;
+      }
+      .p,
+      p{
+        margin-bottom: 10px;
+      }
+    }
+    .footer{
+      border-top: 1px solid #ccc;
+      padding: 5px 12px;
+      font-size: 12px;
+    }
+  }
+  .buy{
+    .icon{
+      border-left: 1px solid #ccc;
+    }
+    .clientInfo {
+      .footer {
+        border-color: #ff8b94;
+      }
+    }
+  }
+  .clientTabel{
+    display: table;
+    width: 100%;
+    background-color: #f5f5f5;
+    color: #666;
+    border: 1px solid #ccc;
+    .info{
+      display: table-cell;
+      vertical-align: middle;
+      padding: 10px;
+    }
+    .icon{
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      width: 70px;
+      i{
+        font-size: 50px;
+        color: @primary2;
+      }
+    }
+  }
+}
+
+
+.topayPopoverW {
+  .ant-spin-container {
+    overflow: visible;
+  }
+}
+.inputNumberGroup{
+  .span{
+    display: block;
+    height: 100%;
+    line-height: 18px;
+  }
+  .ant-input-number:hover,
+  .ant-input-number-focused{
+    z-index: 1;
+  }
+  input{
+    text-align: center;
+  }
+  button{
+    width: 20px;
+    text-align: center;
+    font-size: 18px;
+  }
+  button:first-child{
+    margin-right: -1px;
+    &:hover, &:focus{
+      z-index: 1;
+    }
+
+  }
+  button:last-child{
+    margin-left: -1px;
+    .span{
+      line-height: 22px;
+    }
+  }
+}
+
+
+//商品信息组件 下面统计数量 金额
+.tableListCount{
+  padding-top: 15px;
+  &.bb{
+    padding-bottom: 15px;
+  }
+  li{
+    display: inline-block;
+    margin-left: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    .label{
+      color: #999;
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+}
+
+//================= 色块盒子  （可参考【数据统计】-投放数据页面） =================
+.colorBoxW {
+  padding: 3px;
+  width: 100%;
+  height: 18px;
+  border: 1px solid #d9d9d9;
+  overflow: hidden;
+  >div{
+    position: relative;
+    width: 100%;
+    >p {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 10px;
+      background-color: #7fd3a9;
+      &.red {
+        background-color: #ff8b94;
+      }
+      &.blue {
+        background-color: #88c6f3;
+      }
+    }
+  }
+}
+
+.detailInfoBorder{
+  &.yellowBg{
+    background-color: #fff7e6;
+    border: 1px solid #ffaa00;
+    .line{
+      border-top: 1px dashed #ffaa00;
+    }
+  }
+  &.redBg{
+    background-color: #ffe5e8;
+    border: 1px solid @red-6;
+    .line{
+      border-top: 1px dashed @red-6;
+    }
+  }
+  background-color: @primary4;
+  border: 1px solid @primary3;
+  padding-bottom: 10px;
+  .title{
+    font-size: 14px;
+    line-height: 40px;
+    padding: 0 16px;
+    .span{
+      margin-left: 20px;
+      color: #999;
+      font-size: 12px;
+    }
+  }
+  .line{
+    border-top: 1px dashed @primary3;
+  }
+  .list{
+    padding: 3px 16px;
+    li{
+      padding-top: 5px;
+      .label{
+        float: left;
+      }
+      .con{
+        overflow: hidden;
+        .img{
+          &:first-child{
+            margin-left: 0;
+          }
+          width: 80px;
+          max-height: 65px;
+          overflow: hidden;
+          display: inline-block;
+          margin-left: 15px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}
+//电子文件 显示样式
+.fileTitle{
+  line-height: 30px;
+  background-color: @primary3;
+  padding: 0 30px;
+  a{
+    margin-right: 30px;
+    display: inline-block;
+  }
+}
+//带边框的 表单   可发货页面
+.formBox{
+  border: 1px solid #ccc;
+  padding: 20px 10px 0;
+}
+.oneRowForm{
+  .ant-form-item-label{
+    float: left;
+  }
+  .ant-form-item-control-wrapper{
+    overflow: hidden;
+  }
+  .ant-radio-wrapper{
+    overflow: hidden;
+    display: block;
+  }
+}
+
+//盒子下的 formItem 的 marginBottom 设为0 (如：资金管理-我的账户-账户信息)
+.formItemMB0 {
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+}
+.formItemMB10 {
+  .ant-form-item {
+    margin-bottom: 10px;
+  }
+}
+
+//提示-样式调整-调小一点
+.alertBox {
+  .ant-alert {
+    padding: 4px 15px 4px 37px;
+  }
+  .ant-alert-icon {
+    top: 7.5px;
+  }
+}
+
+//commodityManager/VarietyRefPriceManager 树形结构扩展图片渲染成实心箭头
+.ref-table {
+  &-expand {
+    .ant-table-row-expand-icon {
+      width: 0;
+      height: 0;
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent #888 transparent;
+      background: transparent;
+      vertical-align: top;
+      transition: none;
+
+      &:after {
+        content: ''
+      }
+    }
+
+    &-no {
+      .ant-table-row-expand-icon {
+        width: 0;
+        height: 0;
+        border-width: 6px;
+        border-style: solid;
+        border-color: #888 transparent transparent transparent;
+        background: transparent;
+        vertical-align: bottom;
+        transition: none;
+
+        &:after {
+          content: ''
+        }
+      }
+
+      &-icon {
+        .ant-table-row-expand-icon {
+          visibility: visible;
+          margin-left: 3px;
+          margin-right: 10px !important;
+          width: 6px;
+          height: 6px;
+          background: #888;
+          border-radius: 50%;
+          border: none;
+          transition: none;
+
+          &:after {
+            content: ''
+          }
+        }
+      }
+    }
+  }
+}
+
+//modal .ant-modal-header 的 border-bottom设为0
+.modalHeaderB0 {
+  .ant-modal-header {
+    border-bottom: 0;
+  }
+}
+
+/************************** 例如：【资产管理】-销售单结算详情-货物信息-模块 **********************/
+//二级header，左边带竖条蓝色色块
+.title-header2 {
+  position: relative;
+  padding-left: 15px;
+  // padding-bottom: 15px;
+  line-height: 40px;
+  font-size: 12px;
+  font-weight: bold;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 13px;
+    left: 5px;
+    height: 12px;
+    width: 2px;
+    background-color: @primary-color;
+  }
+}
+//三级header，左边带横条蓝色色块
+.title-header3 {
+  position: relative;
+  padding-left: 23px;
+  line-height: 35px;
+  font-size: 12px;
+  font-weight: bold;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: 8px;
+    height: 1px;
+    width: 8px;
+    background-color: #108ee9;
+  }
+}
