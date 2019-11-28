@@ -153,6 +153,10 @@ export default {
               component: './category',
             },
             {
+              component: './category/Add',
+              name: '新增栏目',
+            },
+            {
               path: '/article',
               name: 'article',
               icon: 'smile',

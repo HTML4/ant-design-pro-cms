@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Card, Table } from 'antd';
+import { Card, Table, Button } from 'antd';
 import { Dispatch, AnyAction } from 'redux';
+import Link from 'umi/link';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { CategoryModelState } from '@/models/category';
@@ -22,6 +23,7 @@ class index extends Component<indexProps, {}> {
   render() {
     const { category, listLoading } = this.props;
     const TableProps = {
+      className: 'f-mt20',
       columns: [
         {
           title: '名称',
@@ -38,11 +40,13 @@ class index extends Component<indexProps, {}> {
         },
       ],
       dataSource: (category && category.categoryList) || [],
-      pagination: { hideOnSinglePage: true, pageSize: 100 },
+      pagination: {
+        hideOnSinglePage: true,
+        pageSize: 100,
+      },
       rowKey: (row: any) => row.id,
       loading: listLoading,
-    };
-    // const TableProps = {
+    }; // const TableProps = {
     //   columns: [
     //     {
     //       title: 'Name',
@@ -77,13 +81,18 @@ class index extends Component<indexProps, {}> {
     //         },
     //       ],
     //     },
-
     //   ],
     // };
 
     return (
       <PageHeaderWrapper>
         <Card>
+          <div className="f-tar">
+            <Button type="primary">
+              <Link to="/category/add">增加顶级栏目</Link>
+            </Button>
+          </div>
+
           <Table {...TableProps} />
         </Card>
       </PageHeaderWrapper>
@@ -93,6 +102,5 @@ class index extends Component<indexProps, {}> {
 
 export default connect(({ category, loading }: ConnectState) => ({
   category,
-  listLoading: loading.effects['category/getCategoryList'],
-  // loading: loading.models.user,
+  listLoading: loading.effects['category/getCategoryList'], // loading: loading.models.user,
 }))(index);

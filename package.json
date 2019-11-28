@@ -28,6 +28,7 @@
     "ui": "umi ui"
   },
   "husky": { "hooks": { "pre-commit": "npm run lint-staged" } },
+  "husky": "",
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
     "**/*.{js,jsx,tsx,ts,less,md,json}": ["prettier --write", "git add"],
