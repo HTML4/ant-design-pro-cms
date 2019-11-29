@@ -18,6 +18,7 @@ export interface Loading {
     setting?: boolean;
     user?: boolean;
     login?: boolean;
+    category?: boolean;
   };
 }
 

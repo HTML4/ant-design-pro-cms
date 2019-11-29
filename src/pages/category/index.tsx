@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Card, Table, Button } from 'antd';
+import { Card, Table, Button, Switch } from 'antd';
 import { Dispatch, AnyAction } from 'redux';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { CategoryModelState } from '@/models/category';
+import { CATEGORY_STATUS } from '@/utils/Const';
 
 interface indexProps {
   category: CategoryModelState;
@@ -15,8 +16,23 @@ interface indexProps {
 
 class index extends Component<indexProps, {}> {
   componentDidMount() {
+    this.getCategoryList();
+  }
+
+  getCategoryList() {
     this.props.dispatch({
       type: 'category/getCategoryList',
+    });
+  }
+
+  statusChange(id: Number, checked: boolean) {
+    this.props.dispatch({
+      type: 'category/addUpdateCategory',
+      payload: {
+        id,
+        status: checked ? CATEGORY_STATUS.OPEN : CATEGORY_STATUS.CLOSE,
+      },
+      callback: this.getCategoryList.bind(this),
     });
   }
 
@@ -36,7 +52,29 @@ class index extends Component<indexProps, {}> {
         {
           title: '状态',
           dataIndex: 'status',
-          render: (data: Number) => (data === 1 ? '启用' : '关闭'),
+          align: 'center',
+          render: (data: Number, row: any) => (
+            <Switch
+              checkedChildren="启用"
+              unCheckedChildren="关闭"
+              defaultChecked={data === CATEGORY_STATUS.OPEN}
+              onChange={checked => this.statusChange(row.id, checked)}
+            />
+          ),
+        },
+        {
+          title: '操作',
+          dataIndex: 'operate',
+          render: (data: string, row: any) => (
+            <div className="btnGroup">
+              <Button size="small">
+                <Link to={`/category/add?id=${row.id}`}>编辑</Link>
+              </Button>
+              <Button size="small">
+                <Link to={`/category/add?parentId=${row.parentId}`}>增加子栏目</Link>
+              </Button>
+            </div>
+          ),
         },
       ],
       dataSource: (category && category.categoryList) || [],
@@ -102,5 +140,5 @@ class index extends Component<indexProps, {}> {
 
 export default connect(({ category, loading }: ConnectState) => ({
   category,
-  listLoading: loading.effects['category/getCategoryList'], // loading: loading.models.user,
+  listLoading: loading.models.category, // loading: loading.models.user,
 }))(index);

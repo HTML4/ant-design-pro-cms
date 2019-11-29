@@ -5,6 +5,7 @@ import { Dispatch, AnyAction } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
+import { CategoryModelState } from '@/models/category';
 
 const formItemLayout = {
   labelCol: {
@@ -21,9 +22,27 @@ interface addProps {
   form: FormComponentProps['form'];
   loading: boolean;
   dispatch: Dispatch<AnyAction>;
+  location: {
+    query: {
+      id: string;
+    };
+  };
+  categoryDetail: CategoryModelState;
 }
 
 class Add extends Component<addProps, {}> {
+  componentDidMount() {
+    const { location, dispatch } = this.props;
+    if (location.query && location.query.id) {
+      dispatch({
+        type: 'category/getCategoryDetail',
+        payload: {
+          id: location.query.id,
+        },
+      });
+    }
+  }
+
   handleSubmit = (e: any) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -41,13 +60,16 @@ class Add extends Component<addProps, {}> {
   };
 
   render() {
-    const { form, loading } = this.props;
+    const { form, loading, categoryDetail, location } = this.props;
+    const { query } = location;
+    console.log('categoryDetail', categoryDetail);
     return (
       <PageHeaderWrapper>
         <Card>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="栏目名称">
               {form.getFieldDecorator('name', {
+                initialValue: query && categoryDetail.name,
                 rules: [
                   {
                     required: true,
@@ -56,6 +78,7 @@ class Add extends Component<addProps, {}> {
                 ],
               })(<Input />)}
             </Form.Item>
+            <Form.Item label="所属栏目"></Form.Item>
             <Form.Item label="隐藏栏目">
               {form.getFieldDecorator('status', {
                 valuePropName: 'checked',
@@ -76,7 +99,7 @@ class Add extends Component<addProps, {}> {
 
 const AddForm = Form.create({ name: 'add' })(Add);
 
-export default connect(({ loading }: ConnectState) => ({
+export default connect(({ loading, category }: ConnectState) => ({
   loading: loading.effects['category/addUpdateCategory'],
-  // loading: loading.models.user,
+  categoryDetail: category.categoryDetail,
 }))(AddForm);
