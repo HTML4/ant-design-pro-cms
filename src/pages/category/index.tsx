@@ -68,10 +68,10 @@ class index extends Component<indexProps, {}> {
           render: (data: string, row: any) => (
             <div className="btnGroup">
               <Button size="small">
-                <Link to={`/category/add?id=${row.id}`}>编辑</Link>
+                <Link to={`/category/add?id=${row.id}&page=edit`}>编辑</Link>
               </Button>
               <Button size="small">
-                <Link to={`/category/add?parentId=${row.parentId}`}>增加子栏目</Link>
+                <Link to={`/category/add?id=${row.id}&page=addChildren`}>增加子栏目</Link>
               </Button>
             </div>
           ),

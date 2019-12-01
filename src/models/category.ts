@@ -3,8 +3,9 @@ import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { getCategoryList, addUpdateCategory, getCategoryDetail } from '@/services/category';
 import { message } from 'antd';
+import { enhanceModel } from '@/utils/createModel';
 
-interface CategoryState {
+export interface CategoryState {
   id: Number;
   name: string;
   parentId: Number;
@@ -36,6 +37,7 @@ export interface CategoryModelType {
   reducers: {
     saveCategoryList: Reducer<CategoryModelState>;
     saveCategoryDetail: Reducer<CategoryModelState>;
+    clearDetail: Reducer<CategoryModelState>;
   };
 }
 
@@ -95,10 +97,22 @@ const CategoryModel: CategoryModelType = {
     saveCategoryDetail(state, action) {
       return {
         ...state,
-        categoryDetail: (action.payload && action.payload.data) || [],
+        categoryDetail: (action.payload && action.payload.data) || {},
+      };
+    },
+    clearDetail(state, action) {
+      console.log('===');
+      return {
+        ...state,
+        categoryDetail: undefined,
       };
     },
   },
 };
 
-export default CategoryModel;
+export default enhanceModel({
+  enhanceClear: {
+    reg: /\/add/,
+    clearReducer: { type: 'clearDetail' },
+  },
+})(CategoryModel);

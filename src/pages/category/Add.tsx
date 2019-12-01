@@ -5,7 +5,8 @@ import { Dispatch, AnyAction } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
-import { CategoryModelState } from '@/models/category';
+import { CategoryState } from '@/models/category';
+import { CATEGORY_STATUS } from '@/utils/Const';
 
 const formItemLayout = {
   labelCol: {
@@ -25,9 +26,10 @@ interface addProps {
   location: {
     query: {
       id: string;
+      page?: 'edit' | 'addChildren';
     };
   };
-  categoryDetail: CategoryModelState;
+  categoryDetail: CategoryState;
 }
 
 class Add extends Component<addProps, {}> {
@@ -45,13 +47,14 @@ class Add extends Component<addProps, {}> {
 
   handleSubmit = (e: any) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    const { form, dispatch, location, categoryDetail } = this.props;
+    form.validateFields((err, values) => {
       if (!err) {
         const payload = {
           ...values,
-          status: values.status ? 2 : 1,
+          status: values.status ? CATEGORY_STATUS.CLOSE : CATEGORY_STATUS.OPEN,
         };
-        this.props.dispatch({
+        dispatch({
           type: 'category/addUpdateCategory',
           payload,
         });
@@ -62,14 +65,22 @@ class Add extends Component<addProps, {}> {
   render() {
     const { form, loading, categoryDetail, location } = this.props;
     const { query } = location;
+    const isEdit = query.page === 'edit';
+    const isAddChildren = query.page === 'addChildren';
+    let title;
+    if (isAddChildren) {
+      title = '增加子栏目';
+    } else if (isEdit) {
+      title = '编辑栏目';
+    }
     console.log('categoryDetail', categoryDetail);
     return (
-      <PageHeaderWrapper>
+      <PageHeaderWrapper title={title}>
         <Card>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="栏目名称">
               {form.getFieldDecorator('name', {
-                initialValue: query && categoryDetail.name,
+                initialValue: isEdit && categoryDetail ? categoryDetail.name : undefined,
                 rules: [
                   {
                     required: true,
@@ -78,7 +89,14 @@ class Add extends Component<addProps, {}> {
                 ],
               })(<Input />)}
             </Form.Item>
-            <Form.Item label="所属栏目"></Form.Item>
+            {categoryDetail ? (
+              <Form.Item label="所属栏目">
+                {categoryDetail && categoryDetail.parentId === 0 && isEdit
+                  ? '顶级栏目'
+                  : categoryDetail && categoryDetail.name}
+              </Form.Item>
+            ) : null}
+
             <Form.Item label="隐藏栏目">
               {form.getFieldDecorator('status', {
                 valuePropName: 'checked',
