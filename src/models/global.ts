@@ -4,6 +4,7 @@ import { Subscription, Effect } from 'dva';
 import { NoticeIconData } from '@/components/NoticeIcon';
 import { queryNotices } from '@/services/user';
 import { ConnectState } from './connect.d';
+import { enhanceModel } from '@/utils/createModel';
 
 export interface NoticeItem extends NoticeIconData {
   id: string;
@@ -136,4 +137,6 @@ const GlobalModel: GlobalModelType = {
   },
 };
 
-export default GlobalModel;
+export default enhanceModel({
+  enhanceClear: ['category'],
+})(GlobalModel);

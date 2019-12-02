@@ -2,8 +2,10 @@ import { Button, Col, Form, Input, Row } from 'antd';
 import React, { Component } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import { GetFieldDecoratorOptions } from 'antd/es/form/Form';
-
+/* eslint-disable */
 import omit from 'omit.js';
+/* eslint-enable */
+
 import ItemMap from './map';
 import LoginContext, { LoginContextProps } from './LoginContext';
 import styles from './index.less';

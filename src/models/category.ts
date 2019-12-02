@@ -1,9 +1,8 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
-import { getCategoryList, addUpdateCategory, getCategoryDetail } from '@/services/category';
 import { message } from 'antd';
-import { enhanceModel } from '@/utils/createModel';
+import { getCategoryList, addUpdateCategory, getCategoryDetail } from '@/services/category';
 
 export interface CategoryState {
   id: Number;
@@ -37,7 +36,7 @@ export interface CategoryModelType {
   reducers: {
     saveCategoryList: Reducer<CategoryModelState>;
     saveCategoryDetail: Reducer<CategoryModelState>;
-    clearDetail: Reducer<CategoryModelState>;
+    clear: Reducer<CategoryModelState>;
   };
 }
 
@@ -100,8 +99,7 @@ const CategoryModel: CategoryModelType = {
         categoryDetail: (action.payload && action.payload.data) || {},
       };
     },
-    clearDetail(state, action) {
-      console.log('===');
+    clear(state) {
       return {
         ...state,
         categoryDetail: undefined,
@@ -110,9 +108,4 @@ const CategoryModel: CategoryModelType = {
   },
 };
 
-export default enhanceModel({
-  enhanceClear: {
-    reg: /\/add/,
-    clearReducer: { type: 'clearDetail' },
-  },
-})(CategoryModel);
+export default CategoryModel;

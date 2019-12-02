@@ -95,5 +95,4 @@ const UserModel: UserModelType = {
     },
   },
 };
-
 export default UserModel;
