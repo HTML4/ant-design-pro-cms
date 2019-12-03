@@ -127,10 +127,9 @@ class index extends Component<indexProps, {}> {
         <Card>
           <div className="f-tar">
             <Button type="primary">
-              <Link to="/category/add">增加顶级栏目</Link>
+              <Link to="/category/add?page=add">增加顶级栏目</Link>
             </Button>
           </div>
-
           <Table {...TableProps} />
         </Card>
       </PageHeaderWrapper>

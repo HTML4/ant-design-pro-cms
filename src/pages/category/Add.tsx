@@ -47,16 +47,21 @@ class Add extends Component<addProps, {}> {
 
   handleSubmit = (e: any) => {
     e.preventDefault();
-    const { form, dispatch, location, categoryDetail } = this.props;
+    const { form, dispatch, location } = this.props;
+    const { page, id } = location.query;
+    const isAddChildren = page === 'addChildren';
     form.validateFields((err, values) => {
       if (!err) {
         const payload = {
           ...values,
           status: values.status ? CATEGORY_STATUS.CLOSE : CATEGORY_STATUS.OPEN,
+          id: isAddChildren ? undefined : id,
+          parentId: isAddChildren ? id : undefined,
         };
         dispatch({
           type: 'category/addUpdateCategory',
           payload,
+          page,
         });
       }
     });

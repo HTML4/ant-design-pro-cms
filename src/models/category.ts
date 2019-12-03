@@ -62,25 +62,28 @@ const CategoryModel: CategoryModelType = {
         payload: response,
       });
     },
-    *addUpdateCategory({ payload, callback }, { call, put }) {
+    *addUpdateCategory({ payload, callback, page }, { call, put }) {
       const response = yield call(addUpdateCategory, payload);
       let msg = {
         message: '添加失败！',
         status: 'error',
       };
-      if (response.code === 0 && !callback) {
-        yield put(routerRedux.replace('/category'));
-        msg = {
-          message: '添加成功！',
-          status: 'success',
-        };
-      }
-      if (callback) {
-        callback();
-        msg = {
-          message: '修改成功！',
-          status: 'success',
-        };
+      if (response.code === 0) {
+        if (payload.id) {
+          msg = {
+            message: '修改成功！',
+            status: 'success',
+          };
+        } else {
+          msg = {
+            message: '添加成功！',
+            status: 'success',
+          };
+        }
+        if (page) {
+          yield put(routerRedux.replace('/category'));
+        }
+        callback && callback();
       }
       message[msg.status](msg.message);
     },
