@@ -153,8 +153,10 @@ export default {
               component: './category',
             },
             {
+              path: '/category/Add',
               component: './category/Add',
               name: '新增栏目',
+              hideInMenu: true,
             },
             {
               path: '/article',

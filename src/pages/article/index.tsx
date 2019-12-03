@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Tree, Table } from 'antd';
+import { Card, Tree, Table, Upload, Button, message } from 'antd';
 import styles from './index.less';
 
 const { TreeNode } = Tree;
@@ -50,6 +50,21 @@ class index extends Component<{}, IndexState> {
         },
       ],
     };
+    const props = {
+      name: 'upload_file',
+      action: '/cms/common/upload.do',
+
+      onChange(info: any) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
     return (
       <Card className={styles.articleIndex}>
         {!isHideCategory ? (
@@ -72,7 +87,6 @@ class index extends Component<{}, IndexState> {
             </Tree>
           </div>
         ) : null}
-
         <div className={styles.leftLine} style={isHideCategory ? { left: 0 } : {}}>
           <div
             className={styles.lineBlock}
@@ -85,6 +99,9 @@ class index extends Component<{}, IndexState> {
           />
         </div>
         <div className={styles.rightList} style={isHideCategory ? { left: 5 } : {}}>
+          <Upload {...props}>
+            <Button> Click to Upload</Button>
+          </Upload>
           <Table {...TableProps} />
         </div>
       </Card>

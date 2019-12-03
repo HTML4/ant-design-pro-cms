@@ -11,7 +11,6 @@ const enhanceClear = (urls: any[]) => {
       const { dispatch, history } = props;
       history.listen(({ pathname }: any) => {
         const historyUrl: any = Cookies.get('historyUrl');
-        console.log('historyUrl', historyUrl, urls);
         const clears: string[] = urls.filter(url => {
           const reg = new RegExp(url);
           return reg.test(historyUrl);
