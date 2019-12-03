@@ -46,6 +46,11 @@ ol {
   }
 }
 
+.ant-pro-basicLayout-content {
+  height: calc((100vh - 64px) - 170px);
+}
+//====================================================
+
 .btnGroup {
   button {
     margin-right: 10px;
@@ -55,6 +60,48 @@ ol {
   }
 }
 
-.ant-pro-basicLayout-content {
-  height: calc((100vh - 64px) - 170px);
+.pageHeader {
+  padding-bottom: 16px;
+  min-height: 30px;
+  white-space: nowrap;
+  .title {
+    font-size: 0;
+    height: 22px;
+    float: left;
+    h3 {
+      font-size: 14px;
+      color: #333;
+      margin-right: 6px;
+      display: inline-block;
+      text-indent: 8px;
+      border-left: 3px solid $--color-primary;
+      vertical-align: bottom;
+      font-weight: normal;
+      line-height: 24px;
+    }
+    h5 {
+      font-size: 12px;
+      font-weight: normal;
+      line-height: 24px;
+      color: #777;
+      vertical-align: bottom;
+      letter-spacing: normal;
+      display: inline-block;
+      padding: 0;
+    }
+  }
+  .right {
+    float: right;
+    overflow: hidden;
+    .el-form-item {
+      margin-right: 5px;
+      margin-bottom: 0;
+      .el-form-item__content {
+        .el-input__inner {
+          width: 100px;
+          padding: 0 5px;
+        }
+      }
+    }
+  }
 }
