@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Tree, Table, Upload, Button, message } from 'antd';
+import Link from 'umi/link';
+import { Card, Tree, Table, Button } from 'antd';
 import styles from './index.less';
 
 const { TreeNode } = Tree;
@@ -16,6 +17,7 @@ class index extends Component<{}, IndexState> {
   render() {
     const { isHideCategory } = this.state;
     const TableProps = {
+      className: 'f-mt10',
       columns: [
         {
           title: 'Name',
@@ -50,21 +52,7 @@ class index extends Component<{}, IndexState> {
         },
       ],
     };
-    const props = {
-      name: 'upload_file',
-      action: '/cms/common/upload.do',
 
-      onChange(info: any) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
     return (
       <Card className={styles.articleIndex}>
         {!isHideCategory ? (
@@ -99,9 +87,17 @@ class index extends Component<{}, IndexState> {
           />
         </div>
         <div className={styles.rightList} style={isHideCategory ? { left: 5 } : {}}>
-          <Upload {...props}>
-            <Button> Click to Upload</Button>
-          </Upload>
+          <div className="pageHeader f-mt20">
+            <div className="title">
+              <h3>内容管理</h3>
+            </div>
+            <div className="right">
+              <Button type="primary" size="small">
+                <Link to="/article/add?page=add">添加文章</Link>
+              </Button>
+            </div>
+          </div>
+
           <Table {...TableProps} />
         </div>
       </Card>

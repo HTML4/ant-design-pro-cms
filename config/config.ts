@@ -153,7 +153,7 @@ export default {
               component: './category',
             },
             {
-              path: '/category/Add',
+              path: '/category/add',
               component: './category/Add',
               name: '新增栏目',
               hideInMenu: true,
@@ -163,6 +163,12 @@ export default {
               name: 'article',
               icon: 'smile',
               component: './article',
+            },
+            {
+              path: '/article/add',
+              name: '添加文章',
+              component: './article/Add',
+              hideInMenu: true,
             },
 
             {

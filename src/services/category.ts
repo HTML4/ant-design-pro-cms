@@ -17,7 +17,7 @@ export async function getCategoryDetail(params: { id: Number }): Promise<any> {
 }
 
 export async function addUpdateCategory(params: addUpdateParams): Promise<any> {
-  return request('/cms/category/addOrUpdate.do', {
+  return request('/cms/category/a/addOrUpdate.do', {
     data: params,
   });
 }
