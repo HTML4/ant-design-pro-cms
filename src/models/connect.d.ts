@@ -6,6 +6,7 @@ import { DefaultSettings as SettingModelState } from '../../config/defaultSettin
 import { UserModelState } from './user';
 import { LoginModelType } from './login';
 import { CategoryModelState } from './category';
+import { ArticleModelState } from './article';
 
 export { GlobalModelState, SettingModelState, UserModelState };
 
@@ -19,6 +20,7 @@ export interface Loading {
     user?: boolean;
     login?: boolean;
     category?: boolean;
+    article?: boolean;
   };
 }
 
@@ -29,6 +31,7 @@ export interface ConnectState {
   user: UserModelState;
   login: LoginModelType;
   category: CategoryModelState;
+  article: ArticleModelState;
 }
 
 export interface Route extends MenuDataItem {

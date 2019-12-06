@@ -3,19 +3,11 @@ import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { getCategoryList, addUpdateCategory, getCategoryDetail } from '@/services/category';
-
-export interface CategoryState {
-  id: Number;
-  name: string;
-  parentId: Number;
-  status: Number;
-  createTime: Date;
-  children: any;
-}
+import { CategoryDetail } from '@/data/category';
 
 export interface CategoryModelState {
-  categoryList?: Array<CategoryState>;
-  categoryDetail?: CategoryState;
+  categoryList?: CategoryDetail[];
+  categoryDetail?: CategoryDetail;
 }
 
 // export interface CategoryDetailModelState {

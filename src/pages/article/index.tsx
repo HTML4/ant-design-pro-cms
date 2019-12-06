@@ -1,21 +1,52 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
+import { ConnectState } from '@/models/connect';
+import { Dispatch, AnyAction } from 'redux';
 import Link from 'umi/link';
 import { Card, Tree, Table, Button } from 'antd';
+import { CategoryDetail } from '@/data/category';
+import { commonTree } from '@/utils/common';
 import styles from './index.less';
 
 const { TreeNode } = Tree;
+
+interface indexProps {
+  categoryList: CategoryDetail[];
+  listLoading: boolean;
+  dispatch: Dispatch<AnyAction>;
+}
 
 interface IndexState {
   isHideCategory: boolean;
 }
 
-class index extends Component<{}, IndexState> {
+class index extends Component<indexProps, IndexState> {
   state: IndexState = {
     isHideCategory: false,
   };
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'category/getCategoryList',
+    });
+    this.getArticleList();
+  }
+
+  onSelectTree(key, event) {
+    console.log(key, event);
+  }
+
+  getArticleList() {
+    this.props.dispatch({
+      type: 'article/getArticleList',
+    });
+  }
+
   render() {
     const { isHideCategory } = this.state;
+    const { categoryList } = this.props;
+    const treeData = (categoryList || []).map(c => commonTree({ data: c }));
+
     const TableProps = {
       className: 'f-mt10',
       columns: [
@@ -57,22 +88,14 @@ class index extends Component<{}, IndexState> {
       <Card className={styles.articleIndex}>
         {!isHideCategory ? (
           <div className={styles.leftMenu}>
-            <Tree showLine defaultExpandedKeys={['0-0-0']}>
-              <TreeNode title="parent 1" key="0-0">
-                <TreeNode title="parent 1-0" key="0-0-0">
-                  <TreeNode title="leaf" key="0-0-0-0" />
-                  <TreeNode title="leaf" key="0-0-0-1" />
-                  <TreeNode title="leaf" key="0-0-0-2" />
-                </TreeNode>
-                <TreeNode title="parent 1-1" key="0-0-1">
-                  <TreeNode title="leaf" key="0-0-1-0" />
-                </TreeNode>
-                <TreeNode title="parent 1-2" key="0-0-2">
-                  <TreeNode title="leaf" key="0-0-2-0" />
-                  <TreeNode title="leaf" key="0-0-2-1" />
-                </TreeNode>
-              </TreeNode>
-            </Tree>
+            {treeData.length && (
+              <Tree
+                showLine
+                treeData={treeData}
+                defaultExpandAll
+                onSelect={(key, info) => this.onSelectTree(key, event)}
+              />
+            )}
           </div>
         ) : null}
         <div className={styles.leftLine} style={isHideCategory ? { left: 0 } : {}}>
@@ -104,4 +127,9 @@ class index extends Component<{}, IndexState> {
     );
   }
 }
-export default index;
+export default connect(({ category, article, loading }: ConnectState) => ({
+  categoryList: category.categoryList,
+  categoryLoading: loading.models.category, // loading: loading.models.user,
+  articleList: article.articleList,
+  articleLoading: loading.models.article,
+}))(index);
