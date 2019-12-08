@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Card, Form, Button, Input, Switch } from 'antd';
+import { Card, Form, Button, Input, Select } from 'antd';
 import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'dva';
 import { FormComponentProps } from 'antd/es/form';
@@ -45,6 +45,17 @@ class Add extends Component<addProps, {}> {
                   },
                 ],
               })(<Input />)}
+            </Form.Item>
+            <Form.Item label="所属栏目">
+              {form.getFieldDecorator('category', {
+                initialValue: undefined,
+                rules: [
+                  {
+                    required: true,
+                    message: '标题不能为空!',
+                  },
+                ],
+              })(<Select />)}
             </Form.Item>
           </Form>
         </Card>
