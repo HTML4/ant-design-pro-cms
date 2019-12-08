@@ -3,7 +3,7 @@
     "outDir": "build/dist",
     "module": "esnext",
     "target": "esnext",
-    "lib": ["esnext", "dom"],
+    "lib": ["esnext", "dom", "dom.iterable"], // "dom.iterable", //这里是新增项
     "sourceMap": true,
     "baseUrl": ".",
     "jsx": "react",

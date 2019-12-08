@@ -1,34 +1,56 @@
 import React, { Component } from 'react';
 import { Upload, Button, Icon, Form } from 'antd';
+import { FormComponentProps } from 'antd/es/form';
 import UploadImages from './UploadImages';
+import { messageAlert } from '@/utils/messageAlert';
+
+const UPLOAD_URL = '/cms/common/upload.do';
 
 const FormItem = Form.Item;
+interface UploadFilesProps {
+  form: FormComponentProps['form'];
+  formItemProps?: Object;
+  required?: boolean;
+  formKey?: string;
+  listType?: string;
+  size?: 'small' | 'default' | 'large' | undefined;
+  maxFile?: Number;
+  multiple?: boolean;
+  disabled?: boolean;
+  uploadClass?: string;
+  actionsURL?: string;
+  fileType?: string;
+  accept?: string;
+  maxSize?: Number;
+  data?: Object;
+  defaultFileList?: any[];
+  message?: string;
+}
 
-export default class UploadFiles extends Component {
+export default class UploadFiles extends Component<UploadFilesProps, {}> {
   uploadCount = 0;
 
-  newFileList: any[] = null;
+  newFileList: any[] = [];
 
   // 上传附件
-  onChangeUpload(e, maxFile) {
+  onChangeUpload(e: any, maxFile: Number) {
     if (Array.isArray(e)) {
       return e;
     }
     // max
-    const serverUrl = config.api.imgServer;
     const fileList: any[] = [];
     if (e && e.file.status === 'removed') {
       this.uploadCount = this.uploadCount - 1;
     }
     if (e && e.file.status && e.fileList) {
-      e.fileList.map(file => {
+      e.fileList.map((file: any) => {
         if (maxFile === 1) {
           if (e.file.uid !== file.uid) {
             return;
           }
         }
         if (file.status === 'done' && file.response && file.response.data) {
-          file.url = serverUrl + file.response.data.url;
+          file.url = file.response.data.url;
           file.name = file.name;
           file.subId = file.response.data.id;
           file.subUrl = file.response.data.url;
@@ -52,8 +74,15 @@ export default class UploadFiles extends Component {
     // }
   }
 
-  //上传附件-限制文件的大小
-  beforeUpload(file, form, formKey, fileType, maxSize, maxFile) {
+  // 上传附件-限制文件的大小
+  beforeUpload(
+    file: any,
+    form: Object,
+    formKey: string,
+    fileType: string | undefined,
+    maxSize: Number,
+    maxFile: Number,
+  ) {
     this.uploadCount = this.uploadCount + 1;
     let isType = true;
     if (fileType && file.type.indexOf(fileType) < 0) {
@@ -98,8 +127,9 @@ export default class UploadFiles extends Component {
       fileType,
       accept,
       maxSize = 10,
+      message,
     } = this.props;
-    let { data, defaultFileList, message } = this.props;
+    let { data, defaultFileList } = this.props;
     // 获取上传文件数目
     data = {
       filedir: 'contract',
@@ -130,11 +160,7 @@ export default class UploadFiles extends Component {
                 {
                   required: true,
                   type: 'array',
-                  message: message
-                    ? message
-                    : typeof required === 'string'
-                    ? required
-                    : `请上传${listType === 'text' ? '附件' : '图片'}`,
+                  message: message || `请上传${listType === 'text' ? '附件' : '图片'}`,
                 },
               ]
             : [],
@@ -144,9 +170,9 @@ export default class UploadFiles extends Component {
           listType === 'text' ? (
             <Upload
               accept={accept || '*'}
-              className={'uploadFiles f-cb' + uploadClass}
+              className={`uploadFiles f-cb ${uploadClass}`}
               disabled={disabled}
-              action={actionsURL ? actionsURL : config.api.uploadFile}
+              action={actionsURL || UPLOAD_URL}
               multiple={multiple}
               beforeUpload={file =>
                 this.beforeUpload(file, form, formKey, fileType, maxSize, maxFile)
@@ -168,15 +194,15 @@ export default class UploadFiles extends Component {
             <UploadImages
               accept="image/*"
               disabled={disabled}
-              action={actionsURL ? actionsURL : config.api.uploadFile}
+              action={actionsURL || UPLOAD_URL}
               listType={listType}
               max={maxFile}
               multiple={multiple}
-              beforeUpload={file =>
+              beforeUpload={(file: any) =>
                 this.beforeUpload(file, form, formKey, fileType, maxSize, maxFile)
               }
               data={data}
-              handleReupload={i => (indexChange = i)}
+              // handleReupload={i => (indexChange = i)}
             />
           ),
         )}

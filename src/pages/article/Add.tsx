@@ -5,7 +5,7 @@ import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'dva';
 import { FormComponentProps } from 'antd/es/form';
 import { ConnectState } from '@/models/connect';
-
+import UploadFiles from '@/components/UploadFiles';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -57,6 +57,15 @@ class Add extends Component<addProps, {}> {
                 ],
               })(<Select />)}
             </Form.Item>
+            <UploadFiles
+              size="default"
+              formKey="uploadFile"
+              listType="picture-card"
+              formItemProps={{
+                label: '附件',
+              }}
+              form={this.props.form}
+            />
           </Form>
         </Card>
       </PageHeaderWrapper>
