@@ -202,6 +202,7 @@ export default class UploadFiles extends Component<UploadFilesProps, {}> {
                 this.beforeUpload(file, form, formKey, fileType, maxSize, maxFile)
               }
               data={data}
+              name="upload_file"
               // handleReupload={i => (indexChange = i)}
             />
           ),
