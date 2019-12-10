@@ -2,7 +2,7 @@ import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getArticleList } from '@/services/article';
+import { getArticleList, addUpdateArticle } from '@/services/article';
 import { ArticleDetail } from '@/data/article';
 
 export interface ArticleModelState {
@@ -14,6 +14,7 @@ export interface ArticleModelType {
   state: ArticleModelState;
   effects: {
     getArticleList: Effect;
+    addUpdateArticle: Effect;
   };
   reducers: {
     saveArticleList: Reducer<ArticleModelState>;
@@ -34,6 +35,33 @@ const ArticleModel: ArticleModelType = {
         type: 'saveArticleList',
         payload: response,
       });
+    },
+    *addUpdateArticle({ payload, callback, page }, { call, put }) {
+      const response = yield call(addUpdateArticle, payload);
+      let msg = {
+        message: '添加失败！',
+        status: 'error',
+      };
+      if (response.code === 0) {
+        if (payload.id) {
+          msg = {
+            message: '修改成功！',
+            status: 'success',
+          };
+        } else {
+          msg = {
+            message: '添加成功！',
+            status: 'success',
+          };
+        }
+        if (page) {
+          yield put(routerRedux.replace('/article'));
+        }
+        if (callback) {
+          callback();
+        }
+      }
+      message[msg.status](msg.message);
     },
   },
 

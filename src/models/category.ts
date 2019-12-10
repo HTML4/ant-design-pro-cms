@@ -75,7 +75,9 @@ const CategoryModel: CategoryModelType = {
         if (page) {
           yield put(routerRedux.replace('/category'));
         }
-        callback && callback();
+        if (callback) {
+          callback();
+        }
       }
       message[msg.status](msg.message);
     },

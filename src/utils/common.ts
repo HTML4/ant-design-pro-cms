@@ -5,12 +5,12 @@ export const commonTree = function commonTree({ data, keys }: any) {
     value: (keys && data[keys.value]) || data.id,
   };
   if (data.children) {
-    newTreeData.children = data.children.map((d: any) => {
-      return commonTree({
+    newTreeData.children = data.children.map((d: any) =>
+      commonTree({
         data: d,
         keys,
-      });
-    });
+      }),
+    );
   }
   return newTreeData;
 };

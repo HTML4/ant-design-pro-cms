@@ -5,7 +5,7 @@ import { Dispatch, AnyAction } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
-import { CategoryState } from '@/models/category';
+import { CategoryDetail } from '@/data/category';
 import { CATEGORY_STATUS } from '@/utils/Const';
 
 const formItemLayout = {
@@ -29,7 +29,7 @@ interface addProps {
       page?: 'edit' | 'addChildren';
     };
   };
-  categoryDetail: CategoryState;
+  categoryDetail: CategoryDetail;
 }
 
 class Add extends Component<addProps, {}> {
@@ -82,7 +82,7 @@ class Add extends Component<addProps, {}> {
     return (
       <PageHeaderWrapper title={title}>
         <Card>
-          <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+          <Form {...formItemLayout}>
             <Form.Item label="栏目名称">
               {form.getFieldDecorator('name', {
                 initialValue: isEdit && categoryDetail ? categoryDetail.name : undefined,
@@ -109,7 +109,7 @@ class Add extends Component<addProps, {}> {
               })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 4 }}>
-              <Button type="primary" htmlType="submit" loading={loading}>
+              <Button type="primary" onClick={this.handleSubmit} loading={loading}>
                 提交
               </Button>
             </Form.Item>
