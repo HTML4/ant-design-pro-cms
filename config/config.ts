@@ -148,7 +148,7 @@ export default {
             },
             {
               path: '/category',
-              name: 'category',
+              name: '分类管理',
               icon: 'smile',
               component: './category',
             },
@@ -160,7 +160,7 @@ export default {
             },
             {
               path: '/article',
-              name: 'article',
+              name: '内容管理',
               icon: 'smile',
               component: './article',
             },

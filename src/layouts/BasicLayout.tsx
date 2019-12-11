@@ -3,7 +3,6 @@
  * You can view component api by:
  * https://github.com/ant-design/ant-design-pro-layout
  */
-
 import ProLayout, {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
@@ -15,8 +14,6 @@ import Link from 'umi/link';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { Icon, Result, Button } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
-
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
@@ -35,7 +32,6 @@ const noMatch = (
     }
   />
 );
-
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
@@ -51,18 +47,16 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
     [path: string]: MenuDataItem;
   };
 };
-
 /**
  * use Authorized check all menu item
  */
+
 const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
   menuList.map(item => {
-    const localItem = {
-      ...item,
-      children: item.children ? menuDataRender(item.children) : [],
-    };
+    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
+
 const defaultFooterDom = (
   <DefaultFooter
     copyright="2019 蚂蚁金服体验技术部出品"
@@ -93,6 +87,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
   if (!isAntDesignPro()) {
     return defaultFooterDom;
   }
+
   return (
     <>
       {defaultFooterDom}
@@ -115,7 +110,14 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 };
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings, location = { pathname: '/' } } = props;
+  const {
+    dispatch,
+    children,
+    settings,
+    location = {
+      pathname: '/',
+    },
+  } = props;
   /**
    * constructor
    */
@@ -133,6 +135,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   /**
    * init variables
    */
+
   const handleMenuCollapse = (payload: boolean): void => {
     if (dispatch) {
       dispatch({
@@ -140,13 +143,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         payload,
       });
     }
-  };
-  // get children authority
+  }; // get children authority
+
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: undefined,
-  };
-
-  // const d = [
+  }; // const d = [
   //   {
   //     children: [],
   //     exact: true,
@@ -166,6 +167,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   //     routes: null,
   //   },
   // ];
+
   return (
     <ProLayout
       logo={logo}
@@ -180,25 +182,23 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         if (menuItemProps.isUrl || menuItemProps.children) {
           return defaultDom;
         }
+
         return (
           <Link to={menuItemProps.path}>
             <Icon type={menuItemProps.icon} />
             <span>
-              {formatMessage({
+              {menuItemProps.name}
+              {/* {formatMessage({
                 id: (menuItemProps && menuItemProps.locale) || '',
-              })}
+              })} */}
             </span>
           </Link>
-        );
-        // return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        ); // return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
       breadcrumbRender={(routers = []) => [
         {
           path: '/',
-          breadcrumbName: formatMessage({
-            id: 'menu.home',
-            defaultMessage: 'Home',
-          }),
+          breadcrumbName: '首页',
         },
         ...routers,
       ]}
@@ -212,7 +212,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       }}
       footerRender={footerRender}
       menuDataRender={menuDataRender}
-      formatMessage={formatMessage}
       rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}
       {...settings}

@@ -1,8 +1,6 @@
 import React from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { FormattedMessage } from 'umi-plugin-react/locale';
 import { Card, Typography } from 'antd';
-
 import styles from './Welcome.less';
 
 const CodePreview: React.FC<{}> = ({ children }) => (
@@ -28,12 +26,17 @@ export default (): React.ReactNode => (
           rel="noopener noreferrer"
           href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
         >
-          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+          获取全部区块
         </a>
       </Typography.Text>
       <CodePreview> npm run fetch:blocks</CodePreview>
     </Card>
-    <p style={{ textAlign: 'center', marginTop: 24 }}>
+    <p
+      style={{
+        textAlign: 'center',
+        marginTop: 24,
+      }}
+    >
       Want to add more pages? Please refer to{' '}
       <a href="https://pro.ant.design/docs/block-cn" target="_blank" rel="noopener noreferrer">
         use block

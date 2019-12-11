@@ -81,21 +81,23 @@ class Add extends Component<addProps, {}> {
   };
 
   renderCategory(data: any, index: number) {
-    const option = (
-      <Select.Option value={data.id} key={data.id}>
-        <span>{data.name}</span>
-      </Select.Option>
-    );
-    if (data.children) {
-      const childrenOption = data.children.map((d: any) => this.renderCategory(d, index + 1));
+    let arr: any = [];
+    for (let i = 0; i < data.length; i++) {
+      arr.push(
+        <Select.Option value={data[i].id} key={data[i].id} label={data[i].name}>
+          <span style={{ marginLeft: index * 15 }}>{data[i].name}</span>
+        </Select.Option>,
+      );
+      if (data[i].children) {
+        arr = arr.concat(this.renderCategory(data[i].children, index + 1));
+      }
     }
-    console.log('option', option);
-    return option;
+
+    return arr;
   }
 
   render() {
-    const { form, categoryList } = this.props;
-
+    const { form, categoryList, loading } = this.props;
     return (
       <PageHeaderWrapper>
         <Card>
@@ -131,7 +133,7 @@ class Add extends Component<addProps, {}> {
                     message: '栏目不能为空!',
                   },
                 ],
-              })(<Select>{categoryList.map(category => this.renderCategory(category, 0))}</Select>)}
+              })(<Select optionLabelProp="label">{this.renderCategory(categoryList, 0)}</Select>)}
             </Form.Item>
             <UploadFiles
               size="default"
@@ -152,7 +154,7 @@ class Add extends Component<addProps, {}> {
               />
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 4 }}>
-              <Button type="primary" onClick={this.handleSubmit}>
+              <Button type="primary" onClick={this.handleSubmit} loading={loading}>
                 提交
               </Button>
             </Form.Item>
