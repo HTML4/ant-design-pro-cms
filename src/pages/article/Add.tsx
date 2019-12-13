@@ -8,6 +8,7 @@ import { FormComponentProps } from 'antd/es/form';
 import { ConnectState } from '@/models/connect';
 import UploadFiles from '@/components/UploadFiles';
 import { CategoryDetail } from '@/data/category';
+import { ArticleDetail } from '@/data/article';
 
 const formItemLayout = {
   labelCol: {
@@ -31,6 +32,8 @@ interface addProps {
     };
   };
   categoryList: CategoryDetail[];
+  articleDetail: ArticleDetail;
+
 }
 class Add extends Component<addProps, {}> {
   state = {
@@ -40,7 +43,18 @@ class Add extends Component<addProps, {}> {
   editorElem: any = undefined;
 
   componentDidMount() {
+    const { location, dispatch } = this.props;
+    if (location.query && location.query.id) {
+      dispatch({
+        type: 'article/getArticleDetail',
+        payload: {
+          id: location.query.id,
+        },
+      });
+    }
+
     this.getCategoryList();
+
     const elem = this.editorElem;
     const editor = new E(elem);
     editor.customConfig.uploadImgServer = '/cms/common/upload_edit.do';
@@ -97,14 +111,14 @@ class Add extends Component<addProps, {}> {
   }
 
   render() {
-    const { form, categoryList, loading } = this.props;
+    const { form, categoryList, loading, articleDetail } = this.props;
     return (
       <PageHeaderWrapper>
         <Card>
           <Form {...formItemLayout}>
             <Form.Item label="标题">
               {form.getFieldDecorator('title', {
-                initialValue: undefined,
+                initialValue: articleDetail.title,
                 rules: [
                   {
                     required: true,
@@ -114,8 +128,8 @@ class Add extends Component<addProps, {}> {
               })(<Input />)}
             </Form.Item>
             <Form.Item label="描述">
-              {form.getFieldDecorator('desc', {
-                initialValue: undefined,
+              {form.getFieldDecorator('description', {
+                initialValue: articleDetail.description,
                 rules: [
                   {
                     required: true,
@@ -126,7 +140,7 @@ class Add extends Component<addProps, {}> {
             </Form.Item>
             <Form.Item label="所属栏目">
               {form.getFieldDecorator('categoryId', {
-                initialValue: undefined,
+                initialValue: articleDetail.categoryId,
                 rules: [
                   {
                     required: true,
@@ -167,8 +181,8 @@ class Add extends Component<addProps, {}> {
 
 const AddForm = Form.create({ name: 'add' })(Add);
 
-export default connect(({ loading, article, category }: ConnectState) => ({
+export default connect(({ loading, category, article }: ConnectState) => ({
   loading: loading.effects['article/addUpdateArticle'],
   categoryList: category.categoryList,
-  // categoryDetail: category.categoryDetail,
+  articleDetail: article.articleDetail
 }))(AddForm);

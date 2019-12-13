@@ -2,11 +2,12 @@ import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getArticleList, addUpdateArticle } from '@/services/article';
+import { getArticleList, addUpdateArticle, getArticleDetail } from '@/services/article';
 import { ArticleDetail } from '@/data/article';
 
 export interface ArticleModelState {
   articleList?: ArticleDetail[];
+  articleDetail?: ArticleDetail | object;
 }
 
 export interface ArticleModelType {
@@ -15,9 +16,11 @@ export interface ArticleModelType {
   effects: {
     getArticleList: Effect;
     addUpdateArticle: Effect;
+    getArticleDetail: Effect;
   };
   reducers: {
     saveArticleList: Reducer<ArticleModelState>;
+    saveArticleDetail: Reducer<ArticleModelState>;
     clear: Reducer<ArticleModelState>;
   };
 }
@@ -26,6 +29,7 @@ const ArticleModel: ArticleModelType = {
   namespace: 'article',
   state: {
     articleList: [],
+    articleDetail: {},
   },
 
   effects: {
@@ -33,6 +37,13 @@ const ArticleModel: ArticleModelType = {
       const response = yield call(getArticleList);
       yield put({
         type: 'saveArticleList',
+        payload: response,
+      });
+    },
+    *getArticleDetail({ payload }, { call, put }) {
+      const response = yield call(getArticleDetail, payload);
+      yield put({
+        type: 'saveArticleDetail',
         payload: response,
       });
     },
@@ -72,9 +83,16 @@ const ArticleModel: ArticleModelType = {
         articleList: (action.payload && action.payload.data) || [],
       };
     },
+    saveArticleDetail(state, action) {
+      return {
+        ...state,
+        articleDetail: (action.payload && action.payload.data) || [],
+      };
+    },
     clear(state) {
       return {
         ...state,
+        articleDetail: {},
       };
     },
   },

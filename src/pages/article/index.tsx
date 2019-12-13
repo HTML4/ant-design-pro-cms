@@ -5,6 +5,7 @@ import { Dispatch, AnyAction } from 'redux';
 import Link from 'umi/link';
 import { Card, Tree, Table, Button } from 'antd';
 import { CategoryDetail } from '@/data/category';
+import { ArticleDetail } from '@/data/article';
 import { commonTree } from '@/utils/common';
 import styles from './index.less';
 
@@ -14,6 +15,7 @@ interface indexProps {
   categoryList: CategoryDetail[];
   listLoading: boolean;
   dispatch: Dispatch<AnyAction>;
+  articleList: ArticleDetail[]
 }
 
 interface IndexState {
@@ -44,44 +46,52 @@ class index extends Component<indexProps, IndexState> {
 
   render() {
     const { isHideCategory } = this.state;
-    const { categoryList } = this.props;
+    const { categoryList, articleList } = this.props;
     const treeData = (categoryList || []).map(c => commonTree({ data: c }));
 
     const TableProps = {
       className: 'f-mt10',
+      rowKey: (row: any) => row.id,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'ID',
+          dataIndex: 'id',
         },
         {
-          title: 'Age',
-          dataIndex: 'age',
-          key: 'age',
-          width: '12%',
+          title: '标题',
+          dataIndex: 'title',
         },
         {
-          title: 'Address',
-          dataIndex: 'address',
-          width: '30%',
-          key: 'address',
+          title: '所属栏目',
+          dataIndex: 'categoryId',
+        },
+        {
+          title: '审核',
+          dataIndex: 'status',
+        },
+        {
+          title: '浏览量',
+          dataIndex: 'pageViews',
+        },
+        {
+          title: '更新时间',
+          dataIndex: 'updateTime',
+        },
+        {
+          title: '操作',
+          render: (data: string, row: any) => (
+            <div className="btnGroup">
+              <Button size="small">
+                <Link to={`/article/add?id=${row.id}&page=edit`}>编辑</Link>
+              </Button>
+            </div>
+          ),
+        },
+        {
+          title: '排序',
         },
       ],
-      dataSource: [
-        {
-          key: 1,
-          name: 'John Brown sr.',
-          age: 60,
-          address: 'New York No. 1 Lake Park',
-        },
-        {
-          key: 2,
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-        },
-      ],
+      dataSource: articleList,
     };
 
     return (
@@ -93,7 +103,7 @@ class index extends Component<indexProps, IndexState> {
                 showLine
                 treeData={treeData}
                 defaultExpandAll
-                onSelect={(key, info) => this.onSelectTree(key, event)}
+                onSelect={(key, event) => this.onSelectTree(key, event)}
               />
             )}
           </div>
