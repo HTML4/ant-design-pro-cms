@@ -5,8 +5,11 @@ import { Dispatch, AnyAction } from 'redux';
 import Link from 'umi/link';
 import { Card, Tree, Table, Button } from 'antd';
 import { CategoryDetail } from '@/data/category';
-import { ArticleDetail } from '@/data/article';
+import { ArticleList } from '@/data/article';
 import { commonTree } from '@/utils/common';
+import { displayDate } from '@/utils/time';
+import { ARTICLE_STATUS } from '@/utils/Const';
+import { getListParams } from '@/services/article';
 import styles from './index.less';
 
 const { TreeNode } = Tree;
@@ -15,16 +18,19 @@ interface indexProps {
   categoryList: CategoryDetail[];
   listLoading: boolean;
   dispatch: Dispatch<AnyAction>;
-  articleList: ArticleDetail[]
+  articleList: ArticleList;
+  articleLoading: boolean;
 }
 
 interface IndexState {
   isHideCategory: boolean;
+  checkedCategoryId: string | undefined;
 }
 
 class index extends Component<indexProps, IndexState> {
   state: IndexState = {
     isHideCategory: false,
+    checkedCategoryId: undefined,
   };
 
   componentDidMount() {
@@ -34,24 +40,31 @@ class index extends Component<indexProps, IndexState> {
     this.getArticleList();
   }
 
-  onSelectTree(key, event) {
-    console.log(key, event);
+  onSelectTree(key: string[]) {
+    this.setState({
+      checkedCategoryId: key[0],
+    });
+    this.getArticleList({
+      categoryId: Number(key[0]) || undefined,
+    });
   }
 
-  getArticleList() {
+  getArticleList(payload?: getListParams) {
     this.props.dispatch({
       type: 'article/getArticleList',
+      payload,
     });
   }
 
   render() {
-    const { isHideCategory } = this.state;
-    const { categoryList, articleList } = this.props;
+    const { isHideCategory, checkedCategoryId } = this.state;
+    const { categoryList, articleList, articleLoading } = this.props;
     const treeData = (categoryList || []).map(c => commonTree({ data: c }));
 
     const TableProps = {
       className: 'f-mt10',
       rowKey: (row: any) => row.id,
+      loading: articleLoading,
       columns: [
         {
           title: 'ID',
@@ -68,6 +81,7 @@ class index extends Component<indexProps, IndexState> {
         {
           title: '审核',
           dataIndex: 'status',
+          render: (text: number) => ARTICLE_STATUS[text],
         },
         {
           title: '浏览量',
@@ -76,6 +90,7 @@ class index extends Component<indexProps, IndexState> {
         {
           title: '更新时间',
           dataIndex: 'updateTime',
+          render: (text: string) => displayDate(text),
         },
         {
           title: '操作',
@@ -91,7 +106,7 @@ class index extends Component<indexProps, IndexState> {
           title: '排序',
         },
       ],
-      dataSource: articleList,
+      dataSource: articleList && articleList.list,
     };
 
     return (
@@ -103,7 +118,7 @@ class index extends Component<indexProps, IndexState> {
                 showLine
                 treeData={treeData}
                 defaultExpandAll
-                onSelect={(key, event) => this.onSelectTree(key, event)}
+                onSelect={key => this.onSelectTree(key)}
               />
             )}
           </div>
@@ -126,7 +141,13 @@ class index extends Component<indexProps, IndexState> {
             </div>
             <div className="right">
               <Button type="primary" size="small">
-                <Link to="/article/add?page=add">添加文章</Link>
+                <Link
+                  to={`/article/add?page=add${
+                    checkedCategoryId ? `&categoryId=${checkedCategoryId}` : ''
+                  }`}
+                >
+                  添加文章
+                </Link>
               </Button>
             </div>
           </div>

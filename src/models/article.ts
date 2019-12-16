@@ -3,10 +3,10 @@ import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { getArticleList, addUpdateArticle, getArticleDetail } from '@/services/article';
-import { ArticleDetail } from '@/data/article';
+import { ArticleDetail, ArticleList } from '@/data/article';
 
 export interface ArticleModelState {
-  articleList?: ArticleDetail[];
+  articleList?: ArticleList | {};
   articleDetail?: ArticleDetail | object;
 }
 
@@ -28,13 +28,13 @@ export interface ArticleModelType {
 const ArticleModel: ArticleModelType = {
   namespace: 'article',
   state: {
-    articleList: [],
+    articleList: {},
     articleDetail: {},
   },
 
   effects: {
-    *getArticleList(_, { call, put }) {
-      const response = yield call(getArticleList);
+    *getArticleList({ payload }, { call, put }) {
+      const response = yield call(getArticleList, payload);
       yield put({
         type: 'saveArticleList',
         payload: response,
@@ -80,7 +80,7 @@ const ArticleModel: ArticleModelType = {
     saveArticleList(state, action) {
       return {
         ...state,
-        articleList: (action.payload && action.payload.data) || [],
+        articleList: (action.payload && action.payload.data) || {},
       };
     },
     saveArticleDetail(state, action) {

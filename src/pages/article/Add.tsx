@@ -23,17 +23,18 @@ const formItemLayout = {
 
 interface addProps {
   form: FormComponentProps['form'];
-  loading: boolean;
   dispatch: Dispatch<AnyAction>;
   location: {
     query: {
       id: string;
       page?: 'edit';
+      categoryId?: string;
     };
   };
+  loadingSub: boolean;
+  loadingDetail: boolean;
   categoryList: CategoryDetail[];
   articleDetail: ArticleDetail;
-
 }
 class Add extends Component<addProps, {}> {
   state = {
@@ -41,6 +42,8 @@ class Add extends Component<addProps, {}> {
   };
 
   editorElem: any = undefined;
+
+  editor: any = undefined;
 
   componentDidMount() {
     const { location, dispatch } = this.props;
@@ -56,16 +59,23 @@ class Add extends Component<addProps, {}> {
     this.getCategoryList();
 
     const elem = this.editorElem;
-    const editor = new E(elem);
-    editor.customConfig.uploadImgServer = '/cms/common/upload_edit.do';
-    editor.customConfig.uploadFileName = 'upload_file';
+    this.editor = new E(elem);
+    this.editor.customConfig.uploadImgServer = '/cms/common/upload_edit.do';
+    this.editor.customConfig.uploadFileName = 'upload_file';
     // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
-    editor.customConfig.onchange = (html: any) => {
+    this.editor.customConfig.onchange = (html: any) => {
       this.setState({
         editorContent: html,
       });
     };
-    editor.create();
+    this.editor.create();
+  }
+
+  componentDidUpdate(preProps: addProps) {
+    const { loadingDetail, articleDetail } = this.props;
+    if (!loadingDetail && preProps.loadingDetail && articleDetail.id) {
+      this.editor.txt.html(articleDetail.content);
+    }
   }
 
   getCategoryList() {
@@ -111,7 +121,8 @@ class Add extends Component<addProps, {}> {
   }
 
   render() {
-    const { form, categoryList, loading, articleDetail } = this.props;
+    const { form, categoryList, loadingSub, articleDetail, location } = this.props;
+    const { query } = location;
     return (
       <PageHeaderWrapper>
         <Card>
@@ -140,7 +151,7 @@ class Add extends Component<addProps, {}> {
             </Form.Item>
             <Form.Item label="所属栏目">
               {form.getFieldDecorator('categoryId', {
-                initialValue: articleDetail.categoryId,
+                initialValue: articleDetail.categoryId || Number(query.categoryId) || undefined,
                 rules: [
                   {
                     required: true,
@@ -168,7 +179,7 @@ class Add extends Component<addProps, {}> {
               />
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 4 }}>
-              <Button type="primary" onClick={this.handleSubmit} loading={loading}>
+              <Button type="primary" onClick={this.handleSubmit} loading={loadingSub}>
                 提交
               </Button>
             </Form.Item>
@@ -182,7 +193,8 @@ class Add extends Component<addProps, {}> {
 const AddForm = Form.create({ name: 'add' })(Add);
 
 export default connect(({ loading, category, article }: ConnectState) => ({
-  loading: loading.effects['article/addUpdateArticle'],
+  loadingSub: loading.effects['article/addUpdateArticle'],
+  loadingDetail: loading.effects['article/getArticleDetail'],
   categoryList: category.categoryList,
-  articleDetail: article.articleDetail
+  articleDetail: article.articleDetail,
 }))(AddForm);

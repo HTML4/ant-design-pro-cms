@@ -9,8 +9,15 @@ interface addUpdateParams {
   status?: string;
 }
 
-export async function getArticleList(): Promise<any> {
-  return request('/cms/artcle/getList.do');
+export interface getListParams {
+  pageNum?: number;
+  pageSize?: number;
+  categoryId?: number;
+}
+export async function getArticleList(params: getListParams): Promise<any> {
+  return request('/cms/artcle/getList.do', {
+    data: params,
+  });
 }
 
 export async function getArticleDetail(params: { id: Number }): Promise<any> {

@@ -1,4 +1,4 @@
-export const commonTree = function commonTree({ data, keys }: any) {
+export const commonTree = ({ data, keys }: any) => {
   const newTreeData: any = {
     key: (keys && data[keys.key]) || data.id,
     title: (keys && data[keys.label]) || data.name,
