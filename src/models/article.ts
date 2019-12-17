@@ -2,7 +2,12 @@ import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { getArticleList, addUpdateArticle, getArticleDetail } from '@/services/article';
+import {
+  getArticleList,
+  addUpdateArticle,
+  getArticleDetail,
+  deleteArticle,
+} from '@/services/article';
 import { ArticleDetail, ArticleList } from '@/data/article';
 
 export interface ArticleModelState {
@@ -25,7 +30,7 @@ export interface ArticleModelType {
   };
 }
 
-const ArticleModel: ArticleModelType = {
+export default {
   namespace: 'article',
   state: {
     articleList: {},
@@ -74,6 +79,15 @@ const ArticleModel: ArticleModelType = {
       }
       message[msg.status](msg.message);
     },
+    *deleteArticle({ payload, callback }, { call }) {
+      const response = yield call(deleteArticle, payload);
+      if (response.code === 0) {
+        message.success('删除成功');
+        if (callback) {
+          callback();
+        }
+      }
+    },
   },
 
   reducers: {
@@ -98,4 +112,4 @@ const ArticleModel: ArticleModelType = {
   },
 };
 
-export default ArticleModel;
+// export default ArticleModel;

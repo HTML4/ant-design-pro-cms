@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { ConnectState } from '@/models/connect';
+import { Card, Tree, Table, Button, Popconfirm } from 'antd';
 import { Dispatch, AnyAction } from 'redux';
 import Link from 'umi/link';
-import { Card, Tree, Table, Button } from 'antd';
+import { ConnectState } from '@/models/connect';
 import { CategoryDetail } from '@/data/category';
 import { ArticleList } from '@/data/article';
 import { commonTree } from '@/utils/common';
@@ -11,8 +11,6 @@ import { displayDate } from '@/utils/time';
 import { ARTICLE_STATUS } from '@/utils/Const';
 import { getListParams } from '@/services/article';
 import styles from './index.less';
-
-const { TreeNode } = Tree;
 
 interface indexProps {
   categoryList: CategoryDetail[];
@@ -46,6 +44,18 @@ class index extends Component<indexProps, IndexState> {
     });
     this.getArticleList({
       categoryId: Number(key[0]) || undefined,
+    });
+  }
+
+  onDelete(id) {
+    const { dispatch, articleList } = this.props;
+    dispatch({
+      type: 'article/deleteArticle',
+      payload: id,
+      callback: () =>
+        this.getArticleList({
+          pageNum: articleList.pageNum,
+        }),
     });
   }
 
@@ -94,11 +104,18 @@ class index extends Component<indexProps, IndexState> {
         },
         {
           title: '操作',
-          render: (data: string, row: any) => (
-            <div className="btnGroup">
+          render: (text: string, row: any) => (
+            <div className="btnGroup f-wsn">
               <Button size="small">
                 <Link to={`/article/add?id=${row.id}&page=edit`}>编辑</Link>
               </Button>
+              <Popconfirm
+                title="此操作不可恢复，确定删除？"
+                placement="bottom"
+                onConfirm={() => this.onDelete(row.id)}
+              >
+                <Button size="small">删除</Button>
+              </Popconfirm>
             </div>
           ),
         },

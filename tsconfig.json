@@ -19,7 +19,8 @@
     "strict": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "noImplicitAny": false // any不报错
   },
   "exclude": [
     "node_modules",
@@ -32,5 +33,5 @@
     "src/setupTests.ts",
     "tslint:latest",
     "tslint-config-prettier"
-  ],
+  ]
 }

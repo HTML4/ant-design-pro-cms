@@ -10,24 +10,30 @@ interface addUpdateParams {
 }
 
 export interface getListParams {
-  pageNum?: number;
-  pageSize?: number;
-  categoryId?: number;
+  pageNum?: Number;
+  pageSize?: Number;
+  categoryId?: Number;
 }
 export async function getArticleList(params: getListParams): Promise<any> {
-  return request('/cms/artcle/getList.do', {
+  return request('/cms/artcle/getArtcleList.do', {
     data: params,
   });
 }
 
 export async function getArticleDetail(params: { id: Number }): Promise<any> {
-  return request('/cms/artcle/getDetail.do', {
+  return request('/cms/artcle/getArtcleDetail.do', {
     data: { id: params.id },
   });
 }
 
 export async function addUpdateArticle(params: addUpdateParams): Promise<any> {
-  return request('/cms/artcle/a/addOrUpdate.do', {
+  return request('/cms/artcle/a/addOrUpdateArtcle.do', {
     data: params,
+  });
+}
+
+export async function deleteArticle(id: Number): Promise<any> {
+  return request('/cms/artcle/a/deleteArtcle.do', {
+    data: { id },
   });
 }
