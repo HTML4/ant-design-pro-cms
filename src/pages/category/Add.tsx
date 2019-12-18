@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Card, Form, Button, Input, Switch } from 'antd';
+import { Card, Form, Button, Input, Switch, Select } from 'antd';
 import { Dispatch, AnyAction } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { CategoryDetail } from '@/data/category';
-import { CATEGORY_STATUS } from '@/utils/Const';
+import { CATEGORY_STATUS, CONTENT_MODEL } from '@/utils/Const';
 
 const formItemLayout = {
   labelCol: {
@@ -78,7 +78,6 @@ class Add extends Component<addProps, {}> {
     } else if (isEdit) {
       title = '编辑栏目';
     }
-    console.log('categoryDetail', categoryDetail);
     return (
       <PageHeaderWrapper title={title}>
         <Card>
@@ -101,6 +100,26 @@ class Add extends Component<addProps, {}> {
                   : categoryDetail && categoryDetail.name}
               </Form.Item>
             ) : null}
+
+            <Form.Item label="内容模型">
+              {form.getFieldDecorator('contentModel', {
+                initialValue: categoryDetail && String(categoryDetail.contentModel),
+                rules: [
+                  {
+                    required: true,
+                    message: '内容模型不能为空!',
+                  },
+                ],
+              })(
+                <Select style={{ width: 100 }}>
+                  {Object.keys(CONTENT_MODEL).map(key => (
+                    <Select.Option value={key} key={key}>
+                      {CONTENT_MODEL[key]}
+                    </Select.Option>
+                  ))}
+                </Select>,
+              )}
+            </Form.Item>
 
             <Form.Item label="隐藏栏目">
               {form.getFieldDecorator('status', {

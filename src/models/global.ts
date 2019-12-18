@@ -138,5 +138,5 @@ const GlobalModel: GlobalModelType = {
 };
 
 export default enhanceModel({
-  enhanceClear: ['category'],
+  enhanceClear: ['category', 'article'],
 })(GlobalModel);

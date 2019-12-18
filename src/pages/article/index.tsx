@@ -8,8 +8,9 @@ import { CategoryDetail } from '@/data/category';
 import { ArticleList } from '@/data/article';
 import { commonTree } from '@/utils/common';
 import { displayDate } from '@/utils/time';
-import { ARTICLE_STATUS } from '@/utils/Const';
+import { ARTICLE_STATUS, CONTENT_MODEL_STATUS } from '@/utils/Const';
 import { getListParams } from '@/services/article';
+import SignlePage from './components/SignlePage';
 import styles from './index.less';
 
 interface indexProps {
@@ -23,12 +24,14 @@ interface indexProps {
 interface IndexState {
   isHideCategory: boolean;
   checkedCategoryId: string | undefined;
+  selectContentModel: Number | undefined;
 }
 
 class index extends Component<indexProps, IndexState> {
   state: IndexState = {
     isHideCategory: false,
     checkedCategoryId: undefined,
+    selectContentModel: undefined,
   };
 
   componentDidMount() {
@@ -38,12 +41,16 @@ class index extends Component<indexProps, IndexState> {
     this.getArticleList();
   }
 
-  onSelectTree(key: string[]) {
+  onSelectTree(value: string[], info) {
+    const checkedCategoryId = info.selectedNodes.length > 0 ? info.selectedNodes[0].key : null;
+    const selectContentModel =
+      info.selectedNodes.length > 0 ? info.selectedNodes[0].props.value : null;
     this.setState({
-      checkedCategoryId: key[0],
+      checkedCategoryId,
+      selectContentModel,
     });
     this.getArticleList({
-      categoryId: Number(key[0]) || undefined,
+      categoryId: Number(checkedCategoryId) || undefined,
     });
   }
 
@@ -67,14 +74,26 @@ class index extends Component<indexProps, IndexState> {
   }
 
   render() {
-    const { isHideCategory, checkedCategoryId } = this.state;
+    const { isHideCategory, checkedCategoryId, selectContentModel } = this.state;
     const { categoryList, articleList, articleLoading } = this.props;
-    const treeData = (categoryList || []).map(c => commonTree({ data: c }));
-
+    const treeData = (categoryList || []).map(c =>
+      commonTree({ data: c, keys: { value: 'contentModel' } }),
+    );
     const TableProps = {
       className: 'f-mt10',
       rowKey: (row: any) => row.id,
       loading: articleLoading,
+      pagination: {
+        showQuickJumper: true,
+        showTotal: total => `共 ${total} 条`,
+        current: articleList && articleList.pageNum,
+        total: articleList.total,
+      },
+      onChange: page => {
+        this.getArticleList({
+          pageNum: page.current,
+        });
+      },
       columns: [
         {
           title: 'ID',
@@ -135,7 +154,7 @@ class index extends Component<indexProps, IndexState> {
                 showLine
                 treeData={treeData}
                 defaultExpandAll
-                onSelect={key => this.onSelectTree(key)}
+                onSelect={(key, info) => this.onSelectTree(key, info)}
               />
             )}
           </div>
@@ -156,20 +175,25 @@ class index extends Component<indexProps, IndexState> {
             <div className="title">
               <h3>内容管理</h3>
             </div>
-            <div className="right">
-              <Button type="primary" size="small">
-                <Link
-                  to={`/article/add?page=add${
-                    checkedCategoryId ? `&categoryId=${checkedCategoryId}` : ''
-                  }`}
-                >
-                  添加文章
-                </Link>
-              </Button>
-            </div>
+            {CONTENT_MODEL_STATUS.PAGE !== selectContentModel ? (
+              <div className="right">
+                <Button type="primary" size="small">
+                  <Link
+                    to={`/article/add?page=add${
+                      checkedCategoryId ? `&categoryId=${checkedCategoryId}` : ''
+                    }`}
+                  >
+                    添加文章
+                  </Link>
+                </Button>
+              </div>
+            ) : null}
           </div>
-
-          <Table {...TableProps} />
+          {CONTENT_MODEL_STATUS.PAGE === selectContentModel ? (
+            <SignlePage categoryId={checkedCategoryId} />
+          ) : (
+            <Table {...TableProps} />
+          )}
         </div>
       </Card>
     );

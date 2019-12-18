@@ -3,6 +3,7 @@ export interface CategoryDetail {
   name: string;
   parentId: Number;
   status: Number;
+  contentModel: Number;
   createTime: Date;
   children: any;
 }

@@ -13,8 +13,8 @@ export interface ArticleDetail {
 }
 
 export interface ArticleList {
-  pageNum: Number;
-  pageSize: Number;
-  total: Number;
+  pageNum: number;
+  pageSize: number;
+  total: number;
   list: ArticleDetail[];
 }

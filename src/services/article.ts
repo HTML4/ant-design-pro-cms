@@ -20,9 +20,9 @@ export async function getArticleList(params: getListParams): Promise<any> {
   });
 }
 
-export async function getArticleDetail(params: { id: Number }): Promise<any> {
+export async function getArticleDetail(params: { id?: Number; categoryId?: Number }): Promise<any> {
   return request('/cms/artcle/getArtcleDetail.do', {
-    data: { id: params.id },
+    data: params,
   });
 }
 
