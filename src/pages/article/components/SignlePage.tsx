@@ -14,6 +14,10 @@ interface SignlePageProps {
   loadingSub: boolean;
 }
 class SignlePage extends Component<SignlePageProps, {}> {
+  state = {
+    editorContent: '',
+  };
+
   editorElem: any = undefined;
 
   editor: any = undefined;
@@ -40,6 +44,25 @@ class SignlePage extends Component<SignlePageProps, {}> {
     this.editor.create();
   }
 
+  componentDidUpdate(preProps: SignlePageProps) {
+    const { loadingDetail, articleDetail } = this.props;
+    if (!loadingDetail && preProps.loadingDetail && articleDetail.id) {
+      this.editor.txt.html(articleDetail.content);
+    }
+  }
+
+  handleSubmit = () => {
+    const { dispatch, articleDetail } = this.props;
+
+    dispatch({
+      type: 'article/addUpdateArticle',
+      payload: {
+        id: articleDetail.id,
+        content: this.state.editorContent,
+      },
+    });
+  };
+
   render() {
     return (
       <div>
@@ -49,7 +72,12 @@ class SignlePage extends Component<SignlePageProps, {}> {
           }}
           style={{ width: '100%' }}
         />
-        <Button className="f-mt20" type="primary">
+        <Button
+          className="f-mt20"
+          type="primary"
+          onClick={this.handleSubmit}
+          loading={this.props.loadingSub}
+        >
           提交
         </Button>
       </div>
