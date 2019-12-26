@@ -49,9 +49,11 @@ class index extends Component<indexProps, IndexState> {
       checkedCategoryId,
       selectContentModel,
     });
-    this.getArticleList({
-      categoryId: Number(checkedCategoryId) || undefined,
-    });
+    if (selectContentModel !== 1) {
+      this.getArticleList({
+        categoryId: Number(checkedCategoryId) || undefined,
+      });
+    }
   }
 
   onDelete(id) {

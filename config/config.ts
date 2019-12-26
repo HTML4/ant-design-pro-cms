@@ -70,43 +70,43 @@ if (isAntDesignProPreview) {
   plugins.push(['umi-plugin-antd-theme', themePluginConfig]);
 }
 
-// if (!TEST && !isAntDesignProPreview) {
-//   plugins.push([
-//     'umi-plugin-antd-theme',
-//     {
-//       theme: [
-//         {
-//           key: 'dark',
-//           fileName: 'dark.css',
-//           theme: 'dark',
-//         },
-//         {
-//           key: 'dust',
-//           fileName: 'dust.css',
-//           modifyVars: {
-//             '@primary-color': '#F5222D',
-//           },
-//         },
-//         {
-//           key: 'dust',
-//           theme: 'dark',
-//           fileName: 'dark-dust.css',
-//           modifyVars: {
-//             '@primary-color': '#F5222D',
-//           },
-//         },
-//         {
-//           key: 'volcano',
-//           theme: 'dark',
-//           fileName: 'dark-volcano.css',
-//           modifyVars: {
-//             '@primary-color': '#FA541C',
-//           },
-//         },
-//       ],
-//     },
-//   ]);
-// }
+if (!TEST && !isAntDesignProPreview) {
+  plugins.push([
+    'umi-plugin-antd-theme',
+    {
+      theme: [
+        {
+          key: 'dark',
+          fileName: 'dark.css',
+          theme: 'dark',
+        },
+        {
+          key: 'dust',
+          fileName: 'dust.css',
+          modifyVars: {
+            '@primary-color': '#F5222D',
+          },
+        },
+        {
+          key: 'dust',
+          theme: 'dark',
+          fileName: 'dark-dust.css',
+          modifyVars: {
+            '@primary-color': '#F5222D',
+          },
+        },
+        {
+          key: 'volcano',
+          theme: 'dark',
+          fileName: 'dark-volcano.css',
+          modifyVars: {
+            '@primary-color': '#FA541C',
+          },
+        },
+      ],
+    },
+  ]);
+}
 
 export default {
   plugins,
@@ -240,6 +240,11 @@ export default {
       target: 'http://localhost:8080/cms/',
       changeOrigin: true,
       pathRewrite: { '^/cms': '' },
+    },
+    '/file/': {
+      target: 'http://localhost/file/',
+      changeOrigin: true,
+      pathRewrite: { '^/file': '' },
     },
   },
 } as IConfig;

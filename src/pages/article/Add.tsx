@@ -89,11 +89,14 @@ class Add extends Component<addProps, {}> {
     const { page, id } = location.query;
     const isEdit = page === 'edit';
     form.validateFields((err, values) => {
+      const thumbnail = values.uploadFile ? values.uploadFile[0].subUrl : undefined;
       if (!err) {
         const payload = {
           ...values,
+          uploadFile: undefined,
           id: isEdit ? id : undefined,
           content: this.state.editorContent,
+          thumbnail,
         };
         dispatch({
           type: 'article/addUpdateArticle',
@@ -123,6 +126,14 @@ class Add extends Component<addProps, {}> {
   render() {
     const { form, categoryList, loadingSub, articleDetail, location } = this.props;
     const { query } = location;
+    const defaultFileList: any = [];
+    if (articleDetail.thumbnail) {
+      defaultFileList.push({
+        tempDir: articleDetail.thumbnail,
+        originFilename: articleDetail.thumbnail,
+      });
+    }
+
     return (
       <PageHeaderWrapper>
         <Card>
@@ -147,7 +158,7 @@ class Add extends Component<addProps, {}> {
                     message: '描述不能为空!',
                   },
                 ],
-              })(<Input />)}
+              })(<Input.TextArea />)}
             </Form.Item>
             <Form.Item label="所属栏目">
               {form.getFieldDecorator('categoryId', {
@@ -169,6 +180,7 @@ class Add extends Component<addProps, {}> {
               }}
               form={this.props.form}
               maxFile={1}
+              defaultFileList={defaultFileList}
             />
             <Form.Item label="内容详情">
               <div

@@ -23,14 +23,7 @@ class SignlePage extends Component<SignlePageProps, {}> {
   editor: any = undefined;
 
   componentDidMount() {
-    const { dispatch, categoryId } = this.props;
-    dispatch({
-      type: 'article/getArticleDetail',
-      payload: {
-        categoryId,
-      },
-    });
-
+    this.getArticleDetail();
     const elem = this.editorElem;
     this.editor = new E(elem);
     this.editor.customConfig.uploadImgServer = '/cms/common/upload_edit.do';
@@ -45,10 +38,23 @@ class SignlePage extends Component<SignlePageProps, {}> {
   }
 
   componentDidUpdate(preProps: SignlePageProps) {
-    const { loadingDetail, articleDetail } = this.props;
-    if (!loadingDetail && preProps.loadingDetail && articleDetail.id) {
-      this.editor.txt.html(articleDetail.content);
+    const { loadingDetail, articleDetail, categoryId } = this.props;
+    if (categoryId !== preProps.categoryId) {
+      this.getArticleDetail();
     }
+    if (!loadingDetail && preProps.loadingDetail) {
+      this.editor.txt.html(articleDetail.content || '');
+    }
+  }
+
+  getArticleDetail() {
+    const { dispatch, categoryId } = this.props;
+    dispatch({
+      type: 'article/getArticleDetail',
+      payload: {
+        categoryId,
+      },
+    });
   }
 
   handleSubmit = () => {
